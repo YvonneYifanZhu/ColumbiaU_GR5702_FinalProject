@@ -1,6 +1,46 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Proposal
 
 ## Research topic
 
+The level of on-time performance is crucial to measure the effectiveness and efficiency of transport systems, and flight delays have been an all-time concern for airline operation management. A report published by the Joint Economic Committee of the U.S. Congress estimated the cost of domestic air traffic delays to the U.S. economy is large and far-reaching, as much as \$41 billion for 2007, including operating costs, jet fuel costs, labor expenses, and additional carbon dioxide disruption [1]. Also, airlines are not required to compensate passengers for delays or cancellations in the United States. The average cost for U.S. passengers was \$80.52 per minute in 2021, which rose 8.4 percent from 2019 [2]. 
+
+Although the outlook of air travel recovery has improved as countries have lifted pandemic restrictions, flight delays and cancellations increase significantly compared with pre-pandemic August 2019 [5]. According to the Department of Transportation, “there was a 6.0% increase in air travel service complaints from July to August, and complaints are more than 320% above pre-pandemic levels.” [3]
+
+We use the data from June to August because of the following reasons: 
+1) The airline performances significantly differ from the pre-pandemic level; the latest dataset we extracted could help to understand the current situation;
+2) The travel volume is significantly larger due to the summer holidays;
+3) the extreme and changeable weather during the summer further challenges the current overwhelming airline system
+
+The motivation of this project is to implement advanced techniques to analyze schedule adherence among major airline carriers in the United States. We aim to define and prioritize the main drivers of flight delays through data visualizations and utilize a generalized linear model to further confirm the result. Our research will have insightful indications for airport regulators and air carriers to examine current performance, and for passengers to make cautious purchase decisions in the future. 
+
+
 ## Data availability
 
+The data introduced in this project is credible content provided by the Bureau of Transportation Statistics (BTS) in 2022 [4]. This on-time performance data contains all scheduled domestic flights in the United States since 1987 by 17 major commercial carriers. The data is open to the public with customized variable selections, updated monthly. Based on our purpose of study, we extracted the latest data reflecting the on-time performance in July 2022 on Oct.25 with 594,957 observations. Except for common force majeure such as bad weather circumstances, technical issues, and political instability, we are interested in other potential variables that will cause flight delays or cancellations. 
+ 
+The 30 variables are selected and divided into 9 categories:
+
+- Time Period: the date of the flight (including the day of week, which may help use discover the pattern of delay across different date in a week);
+- Airline: the information of the airline (different airlines may have various on-time performance, and this might be an important variable we want to explore);
+- Origin: the origin of the flight (departure);
+- Destination: the destination of the flight (combine with the "Origin", we can determine the air route? may influence the on-time performance. This may also help us to perform a US geography map visualization of all the flights );
+- Departure Performance: important departure information, including the delay time (if the flight does delay);
+- Arrival Performance: important arrival information, including the delay time (if the flight does delay);
+- Cancellations and Diversions: some flights are canceled instead of delayed, which is recorded by the variables in this category;
+- Flight Summaries: including the flight time and distances, which might influence the length/frequence of delay
+Cause of Delay: a key part of the analysis (including Carrier Delay, Weather Delay, National Air System Delay, Security Delay, and Late Aircraft Delay)
+- The data retrieved is in a CSV file, and we imported it into Rstudio to conduct the data pre-processing. Since there are around ~600,000 observations per month, we want to first sample a small portion of the data to perform an initial exploration, and then work on the monthly dataset. If time permits, we may also try to work on the data representing June 2022 and August 2022, which are in the same format as July 2022's data.
+ 
+ 
+## Citation
+
+[1] THE JOINT ECONOMIC COMMITTEE (2008). Your Flight Has Been Delayed Again: Flight Delays Cost Passenger , Airlines and the U.S. Economy Billions 
+[2] https://www.airlines.org/dataset/u-s-passenger-carrier-delay-costs/
+[3] https://www.transportation.gov/briefing-room/air-travel-consumer-report-august-consumer-complaints-6-percent-july-more-320-percent
+[4] Data source: https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGJ&QO_fu146_anzr=b0-gvzr
+[5] https://www.bain.com/insights/air-travel-forecast-when-will-airlines-recover-from-covid-19-interactive/

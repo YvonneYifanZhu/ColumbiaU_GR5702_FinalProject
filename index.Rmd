@@ -1,6 +1,6 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAMES HERE"
+title: "EDAV Final Project"
+author: "Yuhang Qiu (yq2347), Yifan Lu (yl5113), Yifan Zhu (yz4360)"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
