@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 3 Data | YOUR TITLE HERE</title>
-  <meta name="description" content="Chapter 3 Data | YOUR TITLE HERE" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <title>Chapter 3 Data | EDAV Final Project: Flight On-time Performance in United States</title>
+  <meta name="description" content="Chapter 3 Data | EDAV Final Project: Flight On-time Performance in United States" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 3 Data | YOUR TITLE HERE" />
+  <meta property="og:title" content="Chapter 3 Data | EDAV Final Project: Flight On-time Performance in United States" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 3 Data | YOUR TITLE HERE" />
+  <meta name="twitter:title" content="Chapter 3 Data | EDAV Final Project: Flight On-time Performance in United States" />
   
   
   
 
-<meta name="author" content="YOUR NAMES HERE" />
+<meta name="author" content="Yuhang Qiu (yq2347), Yifan Lu (yl5113), Yifan Zhu (yz4360)" />
 
 
-<meta name="date" content="2022-10-22" />
+<meta name="date" content="2022-12-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,8 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 
 
@@ -69,7 +71,7 @@
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">SHORT TITLE HERE</a></li>
+<li><a href="./">Airline On-Time Performace</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
@@ -81,12 +83,28 @@
 <li class="chapter" data-level="3" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>3</b> Data</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="data.html"><a href="data.html#sources"><i class="fa fa-check"></i><b>3.1</b> Sources</a></li>
-<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#cleaning-transformation"><i class="fa fa-check"></i><b>3.2</b> Cleaning / transformation</a></li>
-<li class="chapter" data-level="3.3" data-path="data.html"><a href="data.html#missing-value-analysis"><i class="fa fa-check"></i><b>3.3</b> Missing value analysis</a></li>
+<li class="chapter" data-level="3.2" data-path="data.html"><a href="data.html#missing-value-analysis"><i class="fa fa-check"></i><b>3.2</b> Missing value analysis</a></li>
+<li class="chapter" data-level="3.3" data-path="data.html"><a href="data.html#cleaning-transformation"><i class="fa fa-check"></i><b>3.3</b> Cleaning / transformation</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a></li>
-<li class="chapter" data-level="5" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>5</b> Interactive component</a></li>
-<li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a></li>
+<li class="chapter" data-level="4" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>4</b> Results</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="results.html"><a href="results.html#on-time-delay-and-cancellation"><i class="fa fa-check"></i><b>4.1</b> On-time, Delay, and Cancellation</a></li>
+<li class="chapter" data-level="4.2" data-path="results.html"><a href="results.html#delay-analysis"><i class="fa fa-check"></i><b>4.2</b> Delay Analysis</a></li>
+<li class="chapter" data-level="4.3" data-path="results.html"><a href="results.html#multinomial-logistics-model"><i class="fa fa-check"></i><b>4.3</b> Multinomial Logistics Model</a></li>
+<li class="chapter" data-level="4.4" data-path="results.html"><a href="results.html#flight-volumn"><i class="fa fa-check"></i><b>4.4</b> Flight Volumn</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>5</b> Interactive component</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="interactive-component.html"><a href="interactive-component.html#d3-interactive-part"><i class="fa fa-check"></i><b>5.1</b> D3 Interactive Part</a></li>
+<li class="chapter" data-level="5.2" data-path="interactive-component.html"><a href="interactive-component.html#description"><i class="fa fa-check"></i><b>5.2</b> Description</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>6</b> Conclusion</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="conclusion.html"><a href="conclusion.html#conclusion-1"><i class="fa fa-check"></i><b>6.1</b> Conclusion</a></li>
+<li class="chapter" data-level="6.2" data-path="conclusion.html"><a href="conclusion.html#limitation-and-next-step"><i class="fa fa-check"></i><b>6.2</b> Limitation and Next Step</a></li>
+<li class="chapter" data-level="6.3" data-path="conclusion.html"><a href="conclusion.html#lesson-learned"><i class="fa fa-check"></i><b>6.3</b> Lesson Learned</a></li>
+<li class="chapter" data-level="6.4" data-path="conclusion.html"><a href="conclusion.html#citation"><i class="fa fa-check"></i><b>6.4</b> Citation</a></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 </ul>
@@ -98,7 +116,7 @@
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">YOUR TITLE HERE</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">EDAV Final Project: Flight On-time Performance in United States</a>
           </h1>
         </div>
 
@@ -110,12 +128,912 @@
 <h1><span class="header-section-number">Chapter 3</span> Data<a href="data.html#data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="sources" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Sources<a href="data.html#sources" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>There are two main data sources used in this project. The first part of the data is retrieved from Bureau of Transportation, and divided into two separate csv files. The U.S. Bureau of Transportation Statistics (BTS) is one division of the U.S. Department of Transportation (DOT) that provides credible data and analysis to help regulators and executives better understanding current performance of transportation system. The data reflecting on-time performance of domestic flights by 17 major flight carriers is collected since 1987.</p>
+<p>Though the latest update is in December 2022 for flight status in July 2022, we still apply data for July in this study. Since July is among the peak flying season, the result will be more representative and significant when transportation system running at its full capacity. We could detect the delay as well as cancel pattern easily to draw conclusions. Data was generated on October.26 2022 before project proposal, and variable selection was based on research hypothesis. The second part of the data is major airports in United States with longitude and latitude we need for later geovisualization provided by Plotly published on GitHub.</p>
+<ul>
+<li>“T_ONTIME_REPORTING.csv”: there are 30 columns (variables) and 594,957 rows (observations), recording all the flights in July 2022. Downloaded from link: <a href="https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGJ&amp;QO_fu146_anzr=b0-gvzr" class="uri">https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGJ&amp;QO_fu146_anzr=b0-gvzr</a></li>
+<li>“flights.csv”: specify original airport and destination airport for each flight (594,957 rows and 6 columns). Downloaded also from the link above</li>
+<li>“main_airport.csv”: the information of 221 airports in the US and their information (221 rows and 8 columns) downloaded from link: <a href="https://raw.githubusercontent.com/plotly/datasets/master/2011_february_us_airport_traffic.csv" class="uri">https://raw.githubusercontent.com/plotly/datasets/master/2011_february_us_airport_traffic.csv</a>“.</li>
+</ul>
 </div>
-<div id="cleaning-transformation" class="section level2 hasAnchor" number="3.2">
-<h2><span class="header-section-number">3.2</span> Cleaning / transformation<a href="data.html#cleaning-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="missing-value-analysis" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Missing value analysis<a href="data.html#missing-value-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The missing values (NA) appear in columns “CARRIER_DELAY”, “WEATHER_DELAY”, “NAS_DELAY”, “SECURITY_DELAY”, “LATE_AIRCRAFT_DELAY” and “CANCELLATION_CODE”. These missing values is not useless since they reflect the status of the flights. Therefore, we create a new column “status” to indicate the status of each flight based on assignments in column “DEP_DEL15” and column “CANCELLED”. Also, we notice there are some missing value in column “AIR_TIME” since some canceled flights does not have flying duration recorded in minutes; thus, we use column “DISTANCE” instead since there is no missing value in this column no matter the status of the flight.</p>
+<p>From the missing value and the pattern of missing value visualized below using UpSetR package, we observe that:</p>
+<ul>
+<li>There are 446290 rows do not have delay reasons or cancellation codes, which means that these flights are on-time</li>
+<li>There are 138121 rows have missing cancellation code but with non-empty delay reasons, which means that these flights are delayed, and all four variables for delay will not be missing once a flight is delayed.</li>
+<li>There are 10546 rows have all four variables for delay missed but cancellation code is not empty, which means that these flights are cancelled. Notice that the four variables for delay will either appear at the same time or will be missing at the same time.</li>
+</ul>
+<p>Figure. 1 The Missing Pattern
+<img src="finalproj_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
-<div id="missing-value-analysis" class="section level2 hasAnchor" number="3.3">
-<h2><span class="header-section-number">3.3</span> Missing value analysis<a href="data.html#missing-value-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="cleaning-transformation" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Cleaning / transformation<a href="data.html#cleaning-transformation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To deal with missing values due to different embedded flight status, we create new column “status” to indicate “on-time”, “delayed” and “cancelled” as mentioned above, which becomes the new outcome variable for the cleaned dataset. Also, BTS defines flight delay if flight delay recorded in minutes exceeds 15, which has already stored in column “DEP_DEL15” so there is no necessary transformation. Then, we assign full airline name to column “OP_UNIQUE_CARRIER” as new column named “airline” in order to translate abbreviation to general audience.</p>
+<p>Also, to avoid confusions on integer type representing categorical type in actually (such as quarter, day of the month, and day of the week), we set those as factors in R. After data cleaning and transformation, three datasets arrive in an analytical format of data which are displayed below. Finally, the cleaned datasets are written into csv files for results section.</p>
+<table class="table table-striped table" style="margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+YEAR
+</th>
+<th style="text-align:left;">
+QUARTER
+</th>
+<th style="text-align:right;">
+MONTH
+</th>
+<th style="text-align:left;">
+DAY_OF_MONTH
+</th>
+<th style="text-align:left;">
+DAY_OF_WEEK
+</th>
+<th style="text-align:left;">
+FL_DATE
+</th>
+<th style="text-align:left;">
+OP_UNIQUE_CARRIER
+</th>
+<th style="text-align:left;">
+OP_CARRIER
+</th>
+<th style="text-align:right;">
+OP_CARRIER_FL_NUM
+</th>
+<th style="text-align:right;">
+ORIGIN_AIRPORT_ID
+</th>
+<th style="text-align:right;">
+ORIGIN_AIRPORT_SEQ_ID
+</th>
+<th style="text-align:right;">
+ORIGIN_CITY_MARKET_ID
+</th>
+<th style="text-align:left;">
+ORIGIN_CITY_NAME
+</th>
+<th style="text-align:left;">
+ORIGIN_STATE_ABR
+</th>
+<th style="text-align:right;">
+DEST_AIRPORT_ID
+</th>
+<th style="text-align:right;">
+DEST_AIRPORT_SEQ_ID
+</th>
+<th style="text-align:right;">
+DEST_CITY_MARKET_ID
+</th>
+<th style="text-align:right;">
+DEP_DELAY
+</th>
+<th style="text-align:right;">
+DEP_DEL15
+</th>
+<th style="text-align:right;">
+DEP_DELAY_GROUP
+</th>
+<th style="text-align:right;">
+CANCELLED
+</th>
+<th style="text-align:left;">
+CANCELLATION_CODE
+</th>
+<th style="text-align:right;">
+DIVERTED
+</th>
+<th style="text-align:right;">
+AIR_TIME
+</th>
+<th style="text-align:right;">
+DISTANCE
+</th>
+<th style="text-align:right;">
+CARRIER_DELAY
+</th>
+<th style="text-align:right;">
+WEATHER_DELAY
+</th>
+<th style="text-align:right;">
+NAS_DELAY
+</th>
+<th style="text-align:right;">
+SECURITY_DELAY
+</th>
+<th style="text-align:right;">
+LATE_AIRCRAFT_DELAY
+</th>
+<th style="text-align:left;">
+status
+</th>
+<th style="text-align:left;">
+airline
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+Wednesday
+</td>
+<td style="text-align:left;">
+7/13/2022 12:00:00 AM
+</td>
+<td style="text-align:left;">
+WN
+</td>
+<td style="text-align:left;">
+WN
+</td>
+<td style="text-align:right;">
+3115
+</td>
+<td style="text-align:right;">
+11697
+</td>
+<td style="text-align:right;">
+1169706
+</td>
+<td style="text-align:right;">
+32467
+</td>
+<td style="text-align:left;">
+Fort Lauderdale, FL
+</td>
+<td style="text-align:left;">
+FL
+</td>
+<td style="text-align:right;">
+10821
+</td>
+<td style="text-align:right;">
+1082106
+</td>
+<td style="text-align:right;">
+30852
+</td>
+<td style="text-align:right;">
+45
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+121
+</td>
+<td style="text-align:right;">
+925
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:left;">
+delayed
+</td>
+<td style="text-align:left;">
+Southwest Airlines (WN)
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+Wednesday
+</td>
+<td style="text-align:left;">
+7/13/2022 12:00:00 AM
+</td>
+<td style="text-align:left;">
+WN
+</td>
+<td style="text-align:left;">
+WN
+</td>
+<td style="text-align:right;">
+2764
+</td>
+<td style="text-align:right;">
+11697
+</td>
+<td style="text-align:right;">
+1169706
+</td>
+<td style="text-align:right;">
+32467
+</td>
+<td style="text-align:left;">
+Fort Lauderdale, FL
+</td>
+<td style="text-align:left;">
+FL
+</td>
+<td style="text-align:right;">
+11066
+</td>
+<td style="text-align:right;">
+1106606
+</td>
+<td style="text-align:right;">
+31066
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+123
+</td>
+<td style="text-align:right;">
+973
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+on-time
+</td>
+<td style="text-align:left;">
+Southwest Airlines (WN)
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+Wednesday
+</td>
+<td style="text-align:left;">
+7/13/2022 12:00:00 AM
+</td>
+<td style="text-align:left;">
+WN
+</td>
+<td style="text-align:left;">
+WN
+</td>
+<td style="text-align:right;">
+221
+</td>
+<td style="text-align:right;">
+11697
+</td>
+<td style="text-align:right;">
+1169706
+</td>
+<td style="text-align:right;">
+32467
+</td>
+<td style="text-align:left;">
+Fort Lauderdale, FL
+</td>
+<td style="text-align:left;">
+FL
+</td>
+<td style="text-align:right;">
+11259
+</td>
+<td style="text-align:right;">
+1125904
+</td>
+<td style="text-align:right;">
+30194
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+145
+</td>
+<td style="text-align:right;">
+1108
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+on-time
+</td>
+<td style="text-align:left;">
+Southwest Airlines (WN)
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+Wednesday
+</td>
+<td style="text-align:left;">
+7/13/2022 12:00:00 AM
+</td>
+<td style="text-align:left;">
+WN
+</td>
+<td style="text-align:left;">
+WN
+</td>
+<td style="text-align:right;">
+1125
+</td>
+<td style="text-align:right;">
+11697
+</td>
+<td style="text-align:right;">
+1169706
+</td>
+<td style="text-align:right;">
+32467
+</td>
+<td style="text-align:left;">
+Fort Lauderdale, FL
+</td>
+<td style="text-align:left;">
+FL
+</td>
+<td style="text-align:right;">
+11259
+</td>
+<td style="text-align:right;">
+1125904
+</td>
+<td style="text-align:right;">
+30194
+</td>
+<td style="text-align:right;">
+-4
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+-1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+139
+</td>
+<td style="text-align:right;">
+1108
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+on-time
+</td>
+<td style="text-align:left;">
+Southwest Airlines (WN)
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+13
+</td>
+<td style="text-align:left;">
+Wednesday
+</td>
+<td style="text-align:left;">
+7/13/2022 12:00:00 AM
+</td>
+<td style="text-align:left;">
+WN
+</td>
+<td style="text-align:left;">
+WN
+</td>
+<td style="text-align:right;">
+512
+</td>
+<td style="text-align:right;">
+11697
+</td>
+<td style="text-align:right;">
+1169706
+</td>
+<td style="text-align:right;">
+32467
+</td>
+<td style="text-align:left;">
+Fort Lauderdale, FL
+</td>
+<td style="text-align:left;">
+FL
+</td>
+<td style="text-align:right;">
+11278
+</td>
+<td style="text-align:right;">
+1127805
+</td>
+<td style="text-align:right;">
+30852
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+118
+</td>
+<td style="text-align:right;">
+899
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+on-time
+</td>
+<td style="text-align:left;">
+Southwest Airlines (WN)
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table" style="margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+iata
+</th>
+<th style="text-align:left;">
+airport
+</th>
+<th style="text-align:left;">
+city
+</th>
+<th style="text-align:left;">
+state
+</th>
+<th style="text-align:left;">
+country
+</th>
+<th style="text-align:right;">
+lat
+</th>
+<th style="text-align:right;">
+long
+</th>
+<th style="text-align:right;">
+cnt
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+ORD
+</td>
+<td style="text-align:left;">
+Chicago O’Hare International
+</td>
+<td style="text-align:left;">
+Chicago
+</td>
+<td style="text-align:left;">
+IL
+</td>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:right;">
+41.97960
+</td>
+<td style="text-align:right;">
+-87.90446
+</td>
+<td style="text-align:right;">
+25129
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ATL
+</td>
+<td style="text-align:left;">
+William B Hartsfield-Atlanta Intl
+</td>
+<td style="text-align:left;">
+Atlanta
+</td>
+<td style="text-align:left;">
+GA
+</td>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:right;">
+33.64044
+</td>
+<td style="text-align:right;">
+-84.42694
+</td>
+<td style="text-align:right;">
+21925
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DFW
+</td>
+<td style="text-align:left;">
+Dallas-Fort Worth International
+</td>
+<td style="text-align:left;">
+Dallas-Fort Worth
+</td>
+<td style="text-align:left;">
+TX
+</td>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:right;">
+32.89595
+</td>
+<td style="text-align:right;">
+-97.03720
+</td>
+<td style="text-align:right;">
+20662
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PHX
+</td>
+<td style="text-align:left;">
+Phoenix Sky Harbor International
+</td>
+<td style="text-align:left;">
+Phoenix
+</td>
+<td style="text-align:left;">
+AZ
+</td>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:right;">
+33.43417
+</td>
+<td style="text-align:right;">
+-112.00806
+</td>
+<td style="text-align:right;">
+17290
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+DEN
+</td>
+<td style="text-align:left;">
+Denver Intl
+</td>
+<td style="text-align:left;">
+Denver
+</td>
+<td style="text-align:left;">
+CO
+</td>
+<td style="text-align:left;">
+USA
+</td>
+<td style="text-align:right;">
+39.85841
+</td>
+<td style="text-align:right;">
+-104.66700
+</td>
+<td style="text-align:right;">
+13781
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table" style="margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+OP_UNIQUE_CARRIER
+</th>
+<th style="text-align:right;">
+OP_CARRIER_FL_NUM
+</th>
+<th style="text-align:left;">
+ORIGIN
+</th>
+<th style="text-align:left;">
+DEST
+</th>
+<th style="text-align:right;">
+DEP_DEL15
+</th>
+<th style="text-align:right;">
+CANCELLED
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+9E
+</td>
+<td style="text-align:right;">
+5170
+</td>
+<td style="text-align:left;">
+CMH
+</td>
+<td style="text-align:left;">
+DTW
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9E
+</td>
+<td style="text-align:right;">
+5170
+</td>
+<td style="text-align:left;">
+CMH
+</td>
+<td style="text-align:left;">
+DTW
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9E
+</td>
+<td style="text-align:right;">
+5170
+</td>
+<td style="text-align:left;">
+CMH
+</td>
+<td style="text-align:left;">
+DTW
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9E
+</td>
+<td style="text-align:right;">
+5170
+</td>
+<td style="text-align:left;">
+CMH
+</td>
+<td style="text-align:left;">
+DTW
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+9E
+</td>
+<td style="text-align:right;">
+5170
+</td>
+<td style="text-align:left;">
+CMH
+</td>
+<td style="text-align:left;">
+DTW
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
@@ -156,7 +1074,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/edit/main/data.Rmd",
+"link": "https://github.com/YvonneYifanZhu/ColumbiaU_GR5702_FinalProject/edit/main/data.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -164,7 +1082,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/blob/main/data.Rmd",
+"link": "https://github.com/YvonneYifanZhu/ColumbiaU_GR5702_FinalProject/blob/main/data.Rmd",
 "text": null
 },
 "download": null,
