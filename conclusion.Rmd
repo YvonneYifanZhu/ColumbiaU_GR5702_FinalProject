@@ -1,2 +1,26 @@
 # Conclusion
 
+##  Conclusion
+The motivation of this project is to explore factors that contribute to on-time performance for domestic flights in the United States among 17 major airlines. The methodologies include using multiple statistics, visualization techniques, and further confirmed our findings by conducting a multinomial logistics model in R. 
+
+After investigation, we find that on-time performance varies among airlines and day of the week. We observe a significant periodical pattern of total flight and delayed flight for almost all airlines. By comparing, we notice that Southwest Airlines, Allegiant Air, JetBlue Airways have a delay rate over 30% in July 2022; and the predicted probability of those airlines are significantly higher than others, which has been examined by multinomial logistics regression. Also, by visualizing the model effectiveness, we find that except distance between original airport and destination airport, the day of the week, airlines chosen are key factors to cause flight delay with different levels of effectiveness within those factors; while for cancellation, three factors are all statistically significant. More surprisingly, we conclude that while there exists a strong association between total number of scheduled flight and delay rate, some air carriers at the same amount of flight actually out-perform than others.
+
+## Limitation and Next Step
+One of the limitations is we only target the data in July 2022 due to computing capacity. The number of observations for each month exceeds five hundred thousand that we are not able to import and run for multiple months very efficiently. One possible next step will be sampling observations from each month in 2022 based on weights, and then we will be able to generalize our findings. Also, we could try alternative models further such as decision tree, Naive Bayes classifier on flight status instead of multinomial logistic model alone.
+
+## Lesson Learned
+To improve efficiency as discussed above due to the large dataset, we subset a small dataset containing 8,000 observations from the entire dataset. We write demo R scripts and explore data first with significantly less running time. This practical framework could be applied in further projects to improve team collaboration. 
+
+We also discovered some non-obvious relationships between different datasets - for example, the high delay rate of Southwest Airlines and its high flight volume influence the delay rate of Maryland, where Southwest Airlines has its base airport BWI in Maryland. This interesting discovery reminds us that we should always keep open and curious in order to find the hidden patterns. 
+ 
+## Citation
+
+[1] THE JOINT ECONOMIC COMMITTEE (2008). Your Flight Has Been Delayed Again: Flight Delays Cost Passenger , Airlines and the U.S. Economy Billions 
+
+[2] https://www.airlines.org/dataset/u-s-passenger-carrier-delay-costs/
+
+[3] https://www.transportation.gov/briefing-room/air-travel-consumer-report-august-consumer-complaints-6-percent-july-more-320-percent
+
+[4] Data source: https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGJ&QO_fu146_anzr=b0-gvzr
+
+[5] https://www.bain.com/insights/air-travel-forecast-when-will-airlines-recover-from-covid-19-interactive/

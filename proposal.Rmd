@@ -35,12 +35,4 @@ The 30 variables are selected and divided into 9 categories:
 - Flight Summaries: including the flight time and distances, which might influence the length/frequence of delay
 Cause of Delay: a key part of the analysis (including Carrier Delay, Weather Delay, National Air System Delay, Security Delay, and Late Aircraft Delay)
 - The data retrieved is in a CSV file, and we imported it into Rstudio to conduct the data pre-processing. Since there are around ~600,000 observations per month, we want to first sample a small portion of the data to perform an initial exploration, and then work on the monthly dataset. If time permits, we may also try to work on the data representing June 2022 and August 2022, which are in the same format as July 2022's data.
- 
- 
-## Citation
 
-[1] THE JOINT ECONOMIC COMMITTEE (2008). Your Flight Has Been Delayed Again: Flight Delays Cost Passenger , Airlines and the U.S. Economy Billions 
-[2] https://www.airlines.org/dataset/u-s-passenger-carrier-delay-costs/
-[3] https://www.transportation.gov/briefing-room/air-travel-consumer-report-august-consumer-complaints-6-percent-july-more-320-percent
-[4] Data source: https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGJ&QO_fu146_anzr=b0-gvzr
-[5] https://www.bain.com/insights/air-travel-forecast-when-will-airlines-recover-from-covid-19-interactive/

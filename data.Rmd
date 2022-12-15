@@ -1,8 +1,203 @@
 # Data 
 
+
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+# set global 
+knitr::opts_chunk$set(echo=FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+
+
+# These are the packages you will need for this activity.
+packages_needed <- c("tidyverse", "dplyr", "tidyr", "tibble", 
+                     "UpSetR", "naniar",
+                     "plotly", "ggplot2", "kableExtra", "formattable",
+                     "usmap", "nnet", "ggridges", "effects")
+
+package.check <- lapply(
+  packages_needed,
+  FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE, 
+      repos = "https://cloud.r-project.org/")
+    }
+  }
+)
+
+# basic libraries
+library(tidyverse)
+library(dplyr)
+library(tidyr)
+
+# Others
+library(tibble)
+library(UpSetR)
+library(naniar)
+
+# visualization libraries
+library(plotly)
+library(ggplot2)
+library(kableExtra)
+library(usmap)
+library(nnet)
+library(ggridges)
+library(effects)
+library(formattable)
+library(hrbrthemes)
+library(GGally)
+library(viridis)
+
+```
+
+
+
+```{r, message=FALSE, warning=FALSE}
+# Part 2. Data Cleaning and Transformation
+
+# dataset 1
+initial_df <- read.csv("data/input/T_ONTIME_REPORTING_2.csv", header=T, na.strings=c("","NA"))
+
+# subset 2 from dataset 1
+us_flight <- read_csv("data/input/flights.csv") %>%
+  select(OP_UNIQUE_CARRIER, OP_CARRIER_FL_NUM, ORIGIN, DEST, DEP_DEL15, CANCELLED)
+
+# dataset 3
+main_airport <- read.csv('https://raw.githubusercontent.com/plotly/datasets/master/2011_february_us_airport_traffic.csv')
+
+```
+
+
 ## Sources
+
+There are two main data sources used in this project. The first part of the data is retrieved from Bureau of Transportation, and divided into two separate csv files. The U.S. Bureau of Transportation Statistics (BTS) is one division of the U.S. Department of Transportation (DOT) that provides credible data and analysis to help regulators and executives better understanding current performance of transportation system. The data reflecting on-time performance of domestic flights by 17 major flight carriers is collected since 1987. 
+
+Though the latest update is in December 2022 for flight status in July 2022, we still apply data for July in this study. Since July is among the peak flying season, the result will be more representative and significant when transportation system running at its full capacity. We could detect the delay as well as cancel pattern easily to draw conclusions. Data was generated on October.26 2022 before project proposal, and variable selection was based on research hypothesis. The second part of the data is major airports in United States with longitude and latitude we need for later geovisualization provided by Plotly published on GitHub. 
+
+- "T_ONTIME_REPORTING.csv":  there are 30 columns (variables) and 594,957 rows (observations), recording all the flights in July 2022. Downloaded from link: https://www.transtats.bts.gov/DL_SelectFields.aspx?gnoyr_VQ=FGJ&QO_fu146_anzr=b0-gvzr
+- "flights.csv": specify original airport and destination airport for each flight (594,957 rows and 6 columns). Downloaded also from the link above
+- "main_airport.csv": the information of 221 airports in the US and their information (221 rows and 8 columns) downloaded from link: https://raw.githubusercontent.com/plotly/datasets/master/2011_february_us_airport_traffic.csv".
+
+
+
+
+## Missing value analysis
+
+The missing values (NA) appear in columns "CARRIER_DELAY", "WEATHER_DELAY", "NAS_DELAY", "SECURITY_DELAY", "LATE_AIRCRAFT_DELAY" and "CANCELLATION_CODE". These missing values is not useless since they reflect the status of the flights. Therefore, we create a new column "status" to indicate the status of each flight based on assignments in column "DEP_DEL15" and column "CANCELLED". Also, we notice there are some missing value in column "AIR_TIME" since some canceled flights does not have flying duration recorded in minutes; thus, we use column "DISTANCE" instead since there is no missing value in this column no matter the status of the flight. 
+
+From the missing value and the pattern of missing value visualized below using UpSetR package, we observe that:
+
+- There are 446290 rows do not have delay reasons or cancellation codes, which means that these flights are on-time
+- There are 138121 rows have missing cancellation code but with non-empty delay reasons, which means that these flights are delayed, and all four variables for delay will not be missing once a flight is delayed.
+- There are 10546 rows have all four variables for delay missed but cancellation code is not empty, which means that these flights are cancelled. Notice that the four variables for delay will either appear at the same time or will be missing at the same time. 
+
+
+
+```{r, include=FALSE}
+# check data type for all columns
+str(initial_df)
+
+# check null value and missing pattern
+lapply(initial_df,function(x) {length(which(is.na(x)))})
+
+#library(naniar)
+#vis_miss(initial_df[18:30])
+```
+
+Figure. 1 The Missing Pattern
+```{r}
+library(UpSetR)
+gg_miss_upset(initial_df[18:30])
+```
+
+
+
 
 ## Cleaning / transformation
 
-## Missing value analysis
+To deal with missing values due to different embedded flight status, we create new column "status" to indicate "on-time", "delayed" and "cancelled" as mentioned above, which becomes the new outcome variable for the cleaned dataset. Also, BTS defines flight delay if flight delay recorded in minutes exceeds 15, which has already stored in column "DEP_DEL15" so there is no necessary transformation. Then, we assign full airline name to column "OP_UNIQUE_CARRIER" as new column named "airline" in order to translate abbreviation to general audience. 
+
+Also, to avoid confusions on integer type representing categorical type in actually (such as quarter, day of the month, and day of the week), we set those as factors in R. After data cleaning and transformation, three datasets arrive in an analytical format of data which are displayed below. Finally, the cleaned datasets are written into csv files for results section. 
+
+
+```{r}
+# apply data transformation, assign status and carrier
+df_status <- initial_df %>%
+  mutate(status = case_when(DEP_DEL15 == "0" ~ "on-time",
+                            CANCELLED == "1" ~ "cancelled",
+                            DEP_DEL15 == "1" ~ "delayed")) 
+
+df_status$status <- factor(df_status$status, levels = c("on-time", "cancelled", "delayed"))
+df_status$QUARTER <- as.factor(df_status$QUARTER)
+df_status$DAY_OF_MONTH <- as.factor(df_status$DAY_OF_MONTH)
+
+
+df_status <- df_status %>%
+  mutate(airline = case_when(OP_UNIQUE_CARRIER == "YX" ~ "Repblic Airways (YX)",
+                             OP_UNIQUE_CARRIER == "AA" ~ "American Airlines (AA)",
+                             OP_UNIQUE_CARRIER == "UA" ~ "United Airlines (UA)",
+                             OP_UNIQUE_CARRIER == "B6" ~ "JetBlue Airways (B6)",
+                             OP_UNIQUE_CARRIER == "DL" ~ "Delta Airlines (DL)",
+                             OP_UNIQUE_CARRIER == "NK" ~ "Spirit Airlines (NK)",
+                             OP_UNIQUE_CARRIER == "OO" ~ "Sky West Airlines (OO)",
+                             OP_UNIQUE_CARRIER == "WN" ~ "Southwest Airlines (WN)",
+                             OP_UNIQUE_CARRIER == "F9" ~ "Frontier Airlines (F9)",
+                             OP_UNIQUE_CARRIER == "G4" ~ "Allegiant Air (G4)",
+                             OP_UNIQUE_CARRIER == "MQ" ~ "Envoy Air (MQ)",
+                             OP_UNIQUE_CARRIER == "QX" ~ "Horizon Air (QX)",
+                             OP_UNIQUE_CARRIER == "OH" ~ "Comair (OH)",
+                             OP_UNIQUE_CARRIER == "AS" ~ "Alaska Airlines (AS)",
+                             OP_UNIQUE_CARRIER == "9E" ~ "Endeavor Air (9E)",
+                             OP_UNIQUE_CARRIER == "HA" ~ "Hawaiian Airlines (HA)",
+                             OP_UNIQUE_CARRIER == "YV" ~ "Mesa Airlines (YV)")) %>%
+  mutate(DAY_OF_WEEK = case_when(DAY_OF_WEEK == 1 ~ "Monday",
+         DAY_OF_WEEK == 2 ~ "Tuesday",
+         DAY_OF_WEEK == 3 ~ "Wednesday",
+         DAY_OF_WEEK == 4 ~ "Thursday",
+         DAY_OF_WEEK == 5 ~ "Friday",
+         DAY_OF_WEEK == 6 ~ "Saturday",
+         DAY_OF_WEEK == 7 ~ "Sunday"))
+
+
+# "American Airlines (AA)","Alaska Airlines (AS)"," JetBlue Airways (B6)","Delta Air Lines (DL)","Atlantic Southeast Airlines (EV)","Frontier Airlines (F9)","Allegiant Air (G4)","Hawaiian Airlines (HA)","Envoy Air (MQ)","Spirit Airlines (NK)","Comair (OH)","Sky West Airlines (OO)","United Airlines (UA)","Southwest Airlines (WN)","Mesa Airlines (YV)","Repblic Airways (YX)"
+```
+
+
+```{r}
+# merge on origin and arrival lat -long from us_flight and main_airport
+df_flights <- inner_join(main_airport, us_flight, by=c("iata" = "ORIGIN"))
+df_flights <- inner_join(df_flights, main_airport, by=c("DEST" = "iata"))
+
+# for delayed flights
+# write.csv(df_flights, "data/input/subset_for_map.csv)
+```
+
+
+```{r}
+# write out cleaned dataset for later Rmd
+write.csv(df_status, "data/output/dfinal_cleaned.csv", row.names = FALSE)
+
+```
+
+
+```{r}
+# display data after basic transformation
+df_status %>% head(5) %>%
+  kbl() %>%
+  kable_styling(bootstrap_options = "striped", position = "center") %>%
+  kableExtra::kable_styling(latex_options = "hold_position")
+
+main_airport %>% head(5) %>%
+  kbl() %>%
+  kable_styling(bootstrap_options = "striped", position = "center") %>%
+  kableExtra::kable_styling(latex_options = "hold_position")
+
+us_flight %>% head(5) %>%
+  kbl() %>%
+  kable_styling(bootstrap_options = "striped", position = "center") %>%
+  kableExtra::kable_styling(latex_options = "hold_position")
+
+```
+
+
 

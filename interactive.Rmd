@@ -1,3 +1,8 @@
 # Interactive component
 
+## D3 Interactive Part
+See this VizHub Repo:
+https://vizhub.com/FAN-666666/99e9dd16adee4ec9a68ce72c73b5d1cd
 
+## Description
+Our D3 Interactive Part allows users to select different air carriers in the menu bar to see their flight on-time rate of each day in July 2022. We choose this graph demonstration because we found that air carrier delay is the main cause of flight delay. By displaying the on-time rate of 17 air carriers, we want to help readers avoid flight delays. Based on the flight arrival performance presented in the graph, readers are highly recommended to choose air carriers with high on-time rate such as Delta Airlines, Horizon Air, United Airlines and Sky West Airlines. 

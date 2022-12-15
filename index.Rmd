@@ -1,5 +1,5 @@
 --- 
-title: "EDAV Final Project"
+title: 'EDAV Final Project: Flight On-time Performance in United States'
 author: "Yuhang Qiu (yq2347), Yifan Lu (yl5113), Yifan Zhu (yz4360)"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -7,3 +7,8 @@ site: bookdown::bookdown_site
 
 # Introduction
 
+The level of on-time performance is an important measurement of the effectiveness of many transport systems. Flight delays have become one of the top concerns when people travel around especially after lifting pandemic restrictions. In addition, flight delay and cancellation also waste many resources. For U.S. passenger carriers, the average cost of aircraft block time in 2021 was $80.52 per minute. Due to the high inflation rate recently, both labor expense and fuel costs have increased over ten percent from 2019 to 2021 and are still increasing at a high rate. As the economy continuously grows, the demand for business travels and long-distance family visits will accordingly increase. Therefore, the overall losses caused by flight delays will continue to grow and eventually hit a noteworthy value. According to data provided by the Bureau of Transportation Statistics (BTS), on-time arrival rate is currently 76.37% for 2022. Meanwhile, delayed rate 20.62% and cancellation rate 2.76% reach the highest since 2014 (disregarding the data in 2020 since Covid-19 strongly affected the flight status in 2020). [1][2][5]
+
+Those industry research above brings our attention to investigate what factors contribute to delayed or canceled flights. The motivation of this project is to use advanced data visualization tools to analyze the core contributions to most flight delays and cancellations by looking into flight departure data retrieved from BTS. We will also apply a multinomial logistics regression model to further confirm our findings from a statistics perspective. The visualization and model interpretation will not only help passengers to make travel plan more efficiently, but also help regulators and commercial air carriers to understand the industry.
+
+Key words: flight on-time performance, data visualization, multinomial logistics regression, statistic inference and modeling, R, JavaScript

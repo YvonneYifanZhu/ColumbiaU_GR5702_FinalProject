@@ -1,1 +1,464 @@
 # Results
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+# set global 
+knitr::opts_chunk$set(echo=FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+
+
+# These are the packages you will need for this activity.
+packages_needed <- c("tidyverse", "dplyr", "tidyr", "tibble", 
+                     "UpSetR", "naniar",
+                     "plotly", "ggplot2", "kableExtra", "formattable", "ggpubr",
+                     "usmap", "nnet", "ggridges", "effects")
+
+package.check <- lapply(
+  packages_needed,
+  FUN = function(x) {
+    if (!require(x, character.only = TRUE)) {
+      install.packages(x, dependencies = TRUE, 
+      repos = "https://cloud.r-project.org/")
+    }
+  }
+)
+
+# basic libraries
+library(tidyverse)
+library(dplyr)
+library(tidyr)
+
+# Others
+library(tibble)
+library(UpSetR)
+library(naniar)
+
+# visualization libraries
+library(plotly)
+library(ggplot2)
+library(ggpubr)
+library(kableExtra)
+library(usmap)
+library(nnet)
+library(ggridges)
+library(effects)
+library(formattable)
+library(hrbrthemes)
+library(GGally)
+library(viridis)
+
+```
+
+
+
+```{r}
+# initial data set after data cleaning and transformation
+df_status <- read.csv("data/output/dfinal_cleaned.csv")
+
+# subset containing flights info from origin to destination
+us_flight <- read_csv("data/input/subset_for_map.csv") 
+
+# dataset for main airport with longtitude and latitude
+main_airport <- read.csv('https://raw.githubusercontent.com/plotly/datasets/master/2011_february_us_airport_traffic.csv')
+
+```
+
+
+```{r}
+# monthly trend for each airlines
+df_status$status <- factor(df_status$status, levels = c("on-time", "cancelled", "delayed"))
+
+df_trend <- df_status %>%
+  group_by(DAY_OF_MONTH, airline, status) %>%
+  summarise(cnt = n()) %>%
+  mutate(precent = cnt/sum(cnt))
+
+df_total <- df_status %>%
+  group_by(DAY_OF_MONTH, airline) %>%
+  summarise(total = n())%>%
+  ungroup()
+
+total_trend <- df_total %>%
+  left_join(df_trend, by = c("DAY_OF_MONTH", "airline"))
+
+# data cleaning and transformation
+# data frame must contain "region" and "value" columns
+df_state <- df_status %>%
+  group_by(ORIGIN_STATE_ABR) %>%
+  count(status = factor(status, c('on-time', 'delayed', 'cancelled')), .drop = FALSE)
+
+state_total <- df_state %>%
+  group_by(ORIGIN_STATE_ABR, status) %>%
+  summarise(n = sum(n)) %>%
+  mutate(percent = n/sum(n)) %>%
+  mutate(total = sum(n)) 
+
+```
+
+
+Figure.2 Double Click to Display Each Air Carrier
+```{r}
+# line plot for different air carrier
+fig2_plotly_carrier <- plot_ly(total_trend, x = ~DAY_OF_MONTH, y = ~total, 
+        type = "scatter",
+        mode = "lines",
+        color = ~airline,
+        visible = T)  %>%
+  layout(xaxis = list(title = 'July.2022'),
+         yaxis = list(title = "total number of flights"))%>%
+  layout(hovermode = "x unified") %>%
+  layout(margin = list(l = 50, r = 50, b = 100, t = 50),
+         annotations = list(x = 1, y = -0.3, text = "Source: Bureau of Transportation Statistics (BTS), July 2022",
+                            xref='paper', yref='paper', showarrow = F, 
+                            xanchor='right', yanchor='auto', xshift=0, yshift=0,
+                            font = list(size = 10)))
+
+```
+
+
+
+```{r}
+# status by airline
+df_airline <- df_status %>%
+  group_by(OP_UNIQUE_CARRIER, status) %>%
+  count()
+
+fig_stacked_carrier <- ggplot(df_airline, aes(x = OP_UNIQUE_CARRIER, y = n, fill = status)) + 
+  geom_bar(position = "fill", stat = "identity") +
+  labs(caption="Source: Bureau of Transportation Statistics (BTS), July 2022",
+       x="carrier", y = "percentage") +
+  scale_fill_brewer() +
+  theme_minimal()
+
+# status by weekday
+df_day <- df_status %>%
+  group_by(DAY_OF_WEEK, status) %>%
+  count()
+
+df_day$DAY_OF_WEEK <- factor(df_day$DAY_OF_WEEK, levels = c("Monday","Tuesday","Wednesday","Thursday","Friday", "Saturday","Sunday"))
+
+fig_stacked_day <- ggplot(df_day, aes(x = DAY_OF_WEEK, y = n, fill = status)) + 
+  geom_bar(stat = "identity") +
+  labs(caption="Source: Bureau of Transportation Statistics (BTS), July 2022", 
+       x="Day of Week", y = "total flights")+ 
+  scale_fill_brewer() +
+  theme_minimal()
+
+# write for D3 process
+write.csv(df_day,"data/output/D3_day.csv")
+write.csv(df_airline,"data/output/D3_airline.csv")
+```
+
+
+```{r}
+df_airline2 <- df_status %>%
+  group_by(airline, status) %>%
+  count()
+
+pivot_w <- pivot_wider(df_airline2, names_from = status, values_from = n)
+pivot_w[is.na(pivot_w)] <- 0
+
+pivot_sum <- rowSums(pivot_w[,2:4])
+
+pivot_wi <- round(pivot_w[,2:4]*100/rowSums(pivot_w[,2:4]),2)
+pivot_final <- cbind(carrier=pivot_w$airline, pivot_wi)
+pivot_final$total <- pivot_sum
+
+library(formattable)
+
+# change bold target
+table_airline <- formattable(pivot_final, list(
+  total = color_tile("white", "orange"),
+  area(col = c("on-time")) ~ normalize_bar("#CED2C2", 0.8),
+  delayed = formatter("span", style = x ~ ifelse(x > 20,
+    style(color = "#b7410e", font.weight = "bold"), NA))))
+
+```
+
+
+
+```{r, message=FALSE, warning=FALSE}
+# geo visualization on airports grouped by large, medium, small, and others
+#install.packages("usmap")
+library(usmap)
+
+df_map <- state_total %>%
+  ungroup() %>%
+  filter(status == 'delayed') %>%
+  transmute(state = tolower(ORIGIN_STATE_ABR), value = percent) %>%
+  select(state, value)
+
+fig_map_delayrate <- plot_usmap(data = df_map, values = "value", labels=TRUE) +
+  #scale_fill_continuous(name = "delay rate", label = scales::comma) + "#92B1B6", "#CED2C2","#F2C75C"
+  #scale_fill_gradientn(colours = c("white", "red")) +
+  scale_fill_gradientn(colours = c("white","#9fb6cd","#8b3626")) + 
+  # labs(title = "Figure Delay Rate for States in United States") +
+  theme(legend.position = "right")
+
+fig_map_delayrate$layers[[2]]$aes_params$size <- 2
+
+```
+
+
+
+```{r, message=FALSE, warning=FALSE}
+# airport location from https://github.com/plotly/datasets/blob/master/2011_february_us_airport_traffic.csv
+# air flight line for July
+geo <- list(
+  scope = 'north america',
+  projection = list(type = 'azimuthal equal area'),
+  showland = TRUE,
+  landcolor = toRGB("gray95"),
+  countrycolor = toRGB("gray80"))
+
+geo2 <- list(
+  visible = T,
+  resolution = 110,
+  scope = "usa",
+  showcountries = T,
+  countrycolor = toRGB("gray70"),
+  showsubunits = T,
+  subunitcolor = toRGB("gray95"),
+  showland = TRUE,
+  landcolor = toRGB("gray95")
+)
+
+
+geo3 <- list(
+  projection = list(type = 'orthographic'),
+  showland = TRUE,
+  landcolor = toRGB("#e5ecf6"))
+
+fig1_airmap <- plot_geo(locationmode = 'USA-states', color = I("red")) %>%
+  add_markers(data = main_airport, x = ~long, y = ~lat, text = ~airport,
+  size = ~cnt, hoverinfo = "text", alpha = 0.5) %>%
+  layout(caption = "Source: Bureau of Transportation Statistics (BTS), July 2022", 
+         geo = geo3, showlegend = FALSE, height=800) %>%
+  add_segments(data = group_by(us_flight, iata), x = ~long.x, xend = ~long.y,y = ~lat.x, yend = ~lat.y,
+    alpha = 0.02, size = I(0.5), hoverinfo = "none") 
+
+```
+
+
+
+
+```{r}
+# analysis on delay reason
+df_delay <- df_status %>%
+  filter(status == "delayed")
+
+# analysis missing value, 353 in total
+#sum(is.na(df_delay$LATE_AIRCRAFT_DELAY))
+
+# obtain cleaned data frame
+df_delay_cause <- df_delay %>%
+  drop_na(LATE_AIRCRAFT_DELAY)
+
+# analysis delay cause, correlation, put it in data cleaning and transformation 
+df_cause_only <- df_delay_cause[26:30] %>%
+  drop_na()
+
+M <- cor(df_cause_only)
+
+```
+
+
+
+```{r}
+# Ridge density map for each delay cause
+pivot_long <- pivot_longer(df_cause_only, 1:5, names_to = "cause", values_to = "min") %>%
+  filter(min != 0)
+pivot_long$cause <- gsub("_DELAY", "", pivot_long$cause)
+pivot_long$cause <- tolower(pivot_long$cause)
+
+# tapply(pivot_long$min, pivot_long$cause,sd)  
+
+library(dplyr)
+library(kableExtra)
+yz_table <- data.frame("delay cause" = c("carrier", "late aircraft", "national air system", 
+                                         "security", "weather"),
+                       "Min" = c(1.00,1.00,1.00,1.00,1.00),
+                       "Median" = c(22,33,11,19,38),
+                       "Mean" = c(47.33, 54.24, 25.55, 34.34, 60.70),
+                       "Max" = c(2556,2096,1740,1132,1478),
+                       "Std" = c(95.78,69.62,47.75,68.80,84.92))
+
+# change bold target
+table_stat <- formattable(yz_table, list(
+  Max = color_tile("white", "#b7410e"),
+  area(col = "Median") ~ normalize_bar("#CED2C2", 0.8)))
+
+```
+
+
+```{r}
+fig_not1 <- ggplot(pivot_long, aes(x = min, y = cause, fill = cause)) +
+  geom_density_ridges(alpha=0.8) +
+  theme_ridges() + 
+  theme(legend.position = "none") +
+  scale_x_continuous(limits = c(0, 300)) +
+  scale_fill_manual(values = c("#92B1B6", "#CED2C2","#F2C75C","#98A4AE","#796B69"))
+
+```
+
+
+```{r}
+fig_delay_density <- ggplot(pivot_long, aes(x=min, color=cause, fill=cause))+ 
+  geom_density(position="identity", alpha=0.5)+
+  scale_x_continuous(limits = c(0, 180))+
+  facet_grid(cause ~ .)+
+  scale_fill_manual(values = c("#92B1B6", "#CED2C2","#F2C75C","#98A4AE","#796B69"))+ 
+  scale_color_manual(values = c("#92B1B6", "#CED2C2","#F2C75C","#98A4AE","#796B69"))+ 
+  labs(caption="Source: Bureau of Transportation Statistics (BTS), July 2022", x="delay in mins", y = "count")+ 
+  theme_minimal()
+
+```
+
+
+```{r}
+# boxplot
+fig_delay_boxplot <- ggplot(pivot_long, aes(x=min, color=cause, fill=cause))+ 
+  geom_boxplot(position="identity", alpha=0.5)+
+  scale_x_continuous(limits = c(0, 360))+
+  facet_grid(cause ~ .)+
+  scale_fill_manual(values = c("#92B1B6", "#CED2C2","#F2C75C","#98A4AE","#796B69"))+ 
+  scale_color_manual(values = c("#92B1B6", "#CED2C2","#F2C75C","#98A4AE","#796B69"))+ 
+  labs(caption="Source: Bureau of Transportation Statistics (BTS), July 2022", x="delay in min", y = "count")+ 
+  theme_minimal()
+
+```
+
+
+```{r}
+# violin plot
+fig_delayviolin <- ggplot(pivot_long, aes(x=cause, y=min, color=cause, fill=cause))+ 
+  geom_violin(position="identity", alpha=0.5)+
+  geom_point(position = position_jitter(seed = 1, width = 0.1), alpha=0.3) +
+  scale_y_continuous(limits = c(0, 300))+
+  scale_fill_manual(values = c("#92B1B6", "#CED2C2","#F2C75C","#98A4AE","#796B69"))+ 
+  scale_color_manual(values = c("#92B1B6", "#CED2C2","#F2C75C","#98A4AE","#796B69"))+ 
+  labs(title="Figure Delay by Causes", caption="Source: BTS", x="delay cause", y = "min")+ 
+  theme_minimal()
+
+```
+
+
+
+
+```{r, include=FALSE}
+# Multinomial logistic regression
+library(nnet)
+
+# fit data
+df_status$status <- factor(df_status$status, levels = c("on-time", "cancelled", "delayed"))
+multinom_model <- multinom(status ~ DAY_OF_WEEK + OP_UNIQUE_CARRIER + DISTANCE, data = df_status)
+
+exp(coef(multinom_model))
+```
+
+
+```{r, include=FALSE}
+# compute p-value
+z <- summary(multinom_model)$coefficients/summary(multinom_model)$standard.errors
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+
+```
+
+
+
+## On-time, Delay, and Cancellation
+
+
+From Figure 2, we observe a clear weekly pattern for the number of flights for each carrier. For example, the number of Southwest Airlines (WN) is stable from Sunday to Friday, but it has significantly fewer flights on Saturdays. Most carriers have relatively fewer flights on Saturdays, though there are some exceptions: Allegiant Air (G4) and Mesa Airlines(YV) have fewer flights on Tuesdays. This pattern follows our experience that the schedules of flights are determined by the day of the week during one flight season - if there is a flight today, it is very possible that there will be a flight at the same time 7 days later. The number of flights of Southwest Airlines (WN) is stable possibly because it is one of the largest airlines, and it has major routine flights nearly every day. 
+
+Figure.2 Double Click to Display Each Air Carrier
+```{r}
+fig2_plotly_carrier
+```
+
+For this figure (along with table "table_airline"), we can compare the delay and on-time percentage across 17 major carriers. We notice that Southwest Airlines (WN) has the most flights, and it also has the highest delayed rate, though its cancellation rate is not very high related to other air carriers. 
+
+Figure 3. Stacked Bar Chart for On-time Percentage by Carriers
+```{r}
+# make it D3
+fig_stacked_carrier
+```
+
+This figure below help to identify and compare the difference between 17 major airlines with quantified visualization. Large carriers (with total flights more than 50,000: American Airlines (AA), Delta Airlines (DL), Sky West Airlines (OO), Southwest Airlines (WN),  and United Airlines (UA)) all have delayed rates higher than 20%; While among small carriers, Horizon Air (QX) achieves the highest on-time rate. More surprisingly, we find that while there exists a strong association between total number of scheduled flight and on-time performance, some air carrier at the same amount of flight actually out-perform than others. For example, AA and DL have similar amount of total flight, but delay rate for AA is more than 7% worse than DL. Also, some small air carriers such as AS, HA, QX, YX have lower delay rate. Therefore, total number of flight and airlines are factors to on-time performance but their contribution to flight delay various a lot, which may due to other important factors such as management within each airline and flying region of the flights
+
+Figure 4. Table for On-time Percentage by Carriers
+```{r}
+table_airline
+```
+
+
+The total flights from Monday to Thursday are closed, and Fridays have the most flights, followed by Sundays which have the second highest number of flights. 
+
+Figure 5. Stacked Bar Chart for On-time Percentage by Day of the Week
+```{r}
+# make it D3
+fig_stacked_day
+```
+
+## Delay Analysis 
+
+From the heat map, we notice that: Southern and Eastern States have higher delay rates, which is probably because of the higher population with busier airports. Maryland (MD) has the highest delay rate, followed by Nevada (NV) and Colorado (CO). Nevada (NV) has a higher delay rate probably because most flights in the State use McCarran International Airport in Las Vegas, which makes the airport super busy and can cause more delays. Maryland has a high delay rate probably because it has Baltimore/Washington International Airport (BWI), which is **the base for Southwest Airlines** (remember Southwest Airlines has the highest delay rate among all carriers)
+
+Figure 6. Heat Map for Delay Rate of each State
+```{r}
+fig_map_delayrate
+```
+
+
+The figure below visually compared the statistics for all five delay reasons (carrier, late aircraft, national air system, security, and weather). The mean of delay time in minutes are higher than those medians for all delay reasons, which implies a highly right-skewed distribution. For "carrier", it has the highest max value and highest standard deviation. If a flight is delayed due to carrier-related reasons, it is harder to predict the delay time due to its larger standard deviation. Cause "weather" has the highest mean and median, which suggests that it is the severest reason for delays in July, which agrees with our hypothesis that the weather in the summer can influence the flights a lot. Cause "security" has a closer mean and median, with a relatively small standard deviation (also with the smallest max value). This suggests that if a flight is delayed due to security reasons, the delay time is highly predictable and it has the best worst-case scenario.
+
+Figure 7. Table for Statistics Summary of Five Delay Reasons
+```{r}
+table_stat
+```
+
+
+The density graph and boxplot below give us a brief idea about the distribution of delay time caused by air carrier, late aircraft, national air system, security, and weather. The order of these five reasons from highest median delay time to lowest delay time are undesirable weather, late aircraft, air carrier delay, security delay, and national air system delay. Both graphs tell that national air system delay time is averagely shorter than the other causes, while the delay caused by weather has the longest delay time among the five main causes.  
+
+The reason might be that the national air system is a relatively stable system that controlled by a reliable national organization, while weather is a relatively unpredictable factor that human cannot control. Security reason has the smallest range, and the other four reasons have about the same range. The reason might be that security delay is usually within the control of the security and regulation department, but late aircraft, air carrier delay, and national air system delay are usually caused by technical issues and airport arrangement issues that are more likely to take extremely long time to fix, and weather conditions are volatile enough to cause a large range of delay time.
+
+Figure 8. Box plot for Delay Time by Different Delay Reasons
+```{r, message=FALSE}
+fig_delay_boxplot
+```
+
+Figure 9. Density Graph for Delay Time by Different Delay Reasons
+```{r, message=FALSE}
+fig_delay_density
+```
+
+## Multinomial Logistics Model
+Since the outcome variable "status" contains more than two categories, we predict on-time performance using multinomial logistics model instead of normal logistics model. According to the p-values, most factors have very small p-values (less than 0.01) except for 'DISTANCE' and 'OP_UNIQUE_CARRIERYX', which is very surprising. This result shows that the coefficient of most factors are significant and their effects could be detected by the multinomial logistics model. We plot the effectiveness of each level within each factor according to air carriers and day of week. Combined visualizations with exponential of coefficients, we notice the following patterns:
+
+- For delayed flights, the coefficients of Saturday and Sunday are the highest, which might suggest the weekend can be an important factor of delay.
+- For cancelled flights, the coefficients of Monday and Saturday are the highest, followed by Sunday, which suggests a different pattern 
+- Monday might be a more critical factor for cancellation compared with that for delay.
+- For delayed flights, the coefficients of carriers hare much larger than the cancelled flights, which implies that carriers might play a more important role when predicting delay. 
+- For cancelled flights, the coefficients of 'day of week' are larger than the delayed flights, which implies that the day of week might play a more important role when predicting delay. 
+
+
+Figure 10. Effect Plots for Carriers and Day of the Week
+```{r}
+# visualize multinomial model
+library(effects)
+plot(Effect("OP_UNIQUE_CARRIER", multinom_model), multiline=T)
+plot(Effect("DAY_OF_WEEK", multinom_model), multiline=T)
+#plot(Effect("DISTANCE", multinom_model), multiline=T)
+```
+
+## Flight  Volumn
+
+From this geographical visualization, we observed the airport clusters in Unites States. There are more large airports in the Eastern United States, among which airports in New York, Chicago and Washington are the busiest and connect domestics flight (i.e., Newark International Airport, LaGuardia Airport, Chicago O'Hare International Airport). In the Western United States, airports in Seattle, San Francisco and Los Angeles are busier than others. However, the delay rate from previous heatmap shows that delay in California and most eastern area are not severe, implying that transport system in those regions are more effective and efficient.  
+
+Figure 11. Flight Volumn across the U.S.
+```{r}
+fig1_airmap
+```
+
+
